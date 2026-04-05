@@ -106,6 +106,20 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); filter: brightness(1.2); } }
         .floating { animation: float 3.5s ease-in-out infinite; }
 
+        /* Hiệu ứng lơ lửng cho các nút Social bên góc phải */
+        @keyframes float-social {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
+        }
+        .social-bubble {
+            animation: float-social 3s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .social-bubble:hover {
+            animation-play-state: paused;
+            transform: scale(1.15) translateY(-5px);
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -153,10 +167,11 @@
     </div>
 
     <div class="fixed bottom-8 right-6 md:right-10 z-[100] flex flex-col gap-4 items-center">
-        <a href="decor/mã zalo.jpg" data-fancybox="qr" class="w-12 h-12 md:w-14 md:h-14 bg-[#0068FF] rounded-full flex items-center justify-center text-white hover:scale-110 hover:-translate-y-2 transition-transform shadow-[0_4px_10px_rgba(0,104,255,0.4)] font-black text-[10px] md:text-xs">Zalo</a>
-        <a href="https://m.me/ticoscoffee" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-[#0084FF] rounded-full flex items-center justify-center text-white text-xl md:text-2xl hover:scale-110 hover:-translate-y-2 transition-transform shadow-[0_4px_10px_rgba(0,132,255,0.4)]"><i class="fa-brands fa-facebook-messenger"></i></a>
-        <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-[#1877F2] rounded-full flex items-center justify-center text-white text-xl md:text-2xl hover:scale-110 hover:-translate-y-2 transition-transform shadow-[0_4px_10px_rgba(24,119,242,0.4)]"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-full flex items-center justify-center text-white text-xl md:text-2xl hover:scale-110 hover:-translate-y-2 transition-transform shadow-[0_4px_10px_rgba(188,24,136,0.4)]"><i class="fa-brands fa-instagram"></i></a>
+        <a href="decor/mã zalo.jpg" data-fancybox="qr" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-[#0068FF] rounded-full flex items-center justify-center text-white shadow-[0_4px_10px_rgba(0,104,255,0.4)] font-black text-[10px] md:text-xs" style="animation-delay: 0s;">Zalo</a>
+        <a href="https://m.me/ticoscoffee" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-[#0084FF] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(0,132,255,0.4)]" style="animation-delay: 0.2s;"><i class="fa-brands fa-facebook-messenger"></i></a>
+        <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-[#1877F2] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(24,119,242,0.4)]" style="animation-delay: 0.4s;"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(188,24,136,0.4)]" style="animation-delay: 0.6s;"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-black border border-gray-700 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(255,255,255,0.2)]" style="animation-delay: 0.8s;"><i class="fa-brands fa-tiktok"></i></a>
     </div>
 
     <nav class="fixed w-full z-50 bg-[#050505]/70 backdrop-blur-lg border-b border-white/5 transition-all duration-300" id="navbar">
@@ -1106,7 +1121,7 @@
             </div>
             
             <div>
-                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">Đánh Dây Thép</h4>
+                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">THÔNG TIN LIÊN HỆ</h4>
                 <p class="text-gray-400 text-sm leading-relaxed font-body font-medium tracking-wide">
                     <span class="text-white font-bold block mb-2">Hợp tác kinh doanh:</span> 
                     <a href="mailto:coffee.ticos@gmail.com" class="hover:text-ticos-primary transition-colors border-b border-gray-700 hover:border-ticos-primary pb-0.5">coffee.ticos@gmail.com</a>
@@ -1114,11 +1129,12 @@
             </div>
             
             <div>
-                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">Sống Ảo</h4>
+                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">KẾT NỐI VỚI CHÚNG TÔI</h4>
                 <div class="flex justify-center md:justify-start gap-4">
                     <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-[#1877F2] transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="decor/mã zalo.jpg" onerror="this.href='mã zalo.jpg'" data-fancybox="qr-footer" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-[#0068FF] transition-all text-xs shadow-md border border-white/5 font-black">Zalo</a>
                     <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:to-[#bc1888] transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-black hover:border hover:border-gray-500 transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
         </div>
