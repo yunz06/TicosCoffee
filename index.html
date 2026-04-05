@@ -120,6 +120,15 @@
             transform: scale(1.15) translateY(-5px);
         }
 
+        /* Video Smooth Load giấu lúc bị giật */
+        @keyframes smoothLoad {
+            0% { opacity: 0; filter: blur(15px); }
+            100% { opacity: 0.5; filter: blur(0); }
+        }
+        #hero-video {
+            animation: smoothLoad 2.5s ease-in-out forwards;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -174,30 +183,30 @@
         <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-black border border-gray-700 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(255,255,255,0.2)]" style="animation-delay: 0.8s;"><i class="fa-brands fa-tiktok"></i></a>
     </div>
 
-    <nav class="fixed w-full z-50 bg-[#050505]/70 backdrop-blur-lg border-b border-white/5 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 h-24 md:h-28 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-4 group">
-                <img src="decor/logo.png" alt="Ticos Logo" class="h-16 md:h-20 object-contain group-hover:scale-105 transition-transform drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+    <nav class="fixed w-full z-50 bg-[#050505]/70 backdrop-blur-lg border-b border-white/5 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-5 md:py-6 flex items-center justify-between transition-all duration-500" id="nav-container">
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="decor/logo.png" alt="Ticos Logo" class="h-10 md:h-14 object-contain group-hover:scale-105 transition-transform drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
                 <div class="flex flex-col">
-                    <span class="text-4xl md:text-5xl font-heading font-black tracking-tight text-white leading-none">TICOS<span class="text-ticos-primary drop-shadow-[0_0_8px_rgba(200,30,59,0.6)]">.</span></span>
-                    <span class="text-[10px] md:text-[13px] font-bold text-gray-400 tracking-[0.2em] uppercase mt-1 group-hover:text-ticos-primary transition-colors">Workspace & Cafe</span>
+                    <span class="text-3xl md:text-4xl font-heading font-black tracking-tight text-white leading-none">TICOS<span class="text-ticos-primary drop-shadow-[0_0_8px_rgba(200,30,59,0.6)]">.</span></span>
+                    <span class="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase mt-1 group-hover:text-ticos-primary transition-colors">Workspace & Cafe</span>
                 </div>
             </a>
-            <div class="hidden lg:flex space-x-10 font-heading font-bold text-base tracking-[0.15em] uppercase">
+            <div class="hidden lg:flex space-x-10 font-heading font-bold text-sm tracking-[0.15em] uppercase">
                 <a href="#about" class="text-gray-400 hover:text-white transition duration-300">Trang Chủ</a>
                 <a href="#menu" class="text-gray-400 hover:text-white transition duration-300">Menu Ticos</a>
                 <a href="#programs" class="text-gray-400 hover:text-white transition duration-300">Chương Trình</a>
                 <a href="#map" class="text-gray-400 hover:text-white transition duration-300">Chi Nhánh</a>
             </div>
-            <button onclick="openOrderModal(event)" class="btn-bubble font-heading font-black px-8 py-3 md:px-10 md:py-4 text-sm md:text-base tracking-widest uppercase flex items-center gap-3">
-                <i class="fa-solid fa-motorcycle text-xl"></i> <span class="hidden md:inline">GỌI SHIP NGAY</span>
+            <button onclick="openOrderModal(event)" class="btn-bubble font-heading font-black px-6 py-2.5 md:px-8 md:py-3 text-xs md:text-sm tracking-widest uppercase flex items-center gap-2">
+                <i class="fa-solid fa-motorcycle text-lg"></i> <span class="hidden md:inline">GỌI SHIP NGAY</span>
             </button>
         </div>
     </nav>
 
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 bg-[#050505]">
         <div class="absolute inset-0 z-0">
-            <video autoplay loop muted playsinline class="w-full h-full object-cover transform scale-105 opacity-50 filter contrast-125 saturate-50" id="hero-video" poster="decor/inside.jpg">
+            <video autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover transform scale-105 opacity-0 filter contrast-125 saturate-50" id="hero-video" poster="decor/inside.jpg">
                 <source src="decor/video-ticos.mp4" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
@@ -287,7 +296,7 @@
                 <p class="text-gray-400 mt-6 max-w-2xl mx-auto text-xl font-medium leading-relaxed">Cần tỉnh táo? Có ngay ly Đen Đá đậm đặc. Đói lả người? Có ngay Bánh Tráng Tóp Mỡ giòn rụm nhai vui tai. Chọn món nhanh rồi quay lại gõ code tiếp nào!</p>
             </div>
 
-            <div class="flex overflow-x-auto snap-x gap-4 pb-6 mb-16 no-scrollbar gs-fade-up sticky top-[90px] z-40 bg-[#050505]/95 py-4 px-4 justify-start xl:justify-center border-y border-white/5 backdrop-blur-xl">
+            <div class="flex overflow-x-auto snap-x gap-4 pb-6 mb-16 no-scrollbar gs-fade-up sticky top-[70px] md:top-[85px] z-40 bg-[#050505]/95 py-4 px-4 justify-start xl:justify-center border-y border-white/5 backdrop-blur-xl transition-all duration-300">
                 <button onclick="filterMenu('all', this)" class="snap-start active-tab flex-none px-8 py-3 rounded-[30px] bg-[#1a1a1a] text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all shadow-md">QUẤT HẾT</button>
                 <button onclick="filterMenu('caphe', this)" class="snap-start flex-none px-8 py-3 rounded-[30px] bg-[#1a1a1a] text-gray-400 border border-transparent font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-[#252525]">CÀ PHÊ TỈNH</button>
                 <button onclick="filterMenu('matcha', this)" class="snap-start flex-none px-8 py-3 rounded-[30px] bg-[#1a1a1a] text-gray-400 border border-transparent font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-[#252525]">MATCHA</button>
@@ -1289,16 +1298,22 @@
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
         
-        gsap.to("#hero-video", { y: "20%", ease: "none", scrollTrigger: { trigger: "section", start: "top top", scrub: true }});
-        
+        // Hiệu ứng cuộn Navbar mượt mà hơn
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
+            const navContainer = document.getElementById('nav-container');
             if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'py-2', 'bg-[#050505]/95');
-                nav.classList.remove('py-4', 'bg-[#050505]/70', 'backdrop-blur-lg');
+                nav.classList.add('shadow-lg', 'bg-[#050505]/95');
+                nav.classList.remove('bg-[#050505]/70');
+                // Thu nhỏ độ cao Navbar khi cuộn
+                navContainer.classList.add('py-2', 'md:py-3');
+                navContainer.classList.remove('py-5', 'md:py-6');
             } else {
-                nav.classList.remove('shadow-lg', 'py-2', 'bg-[#050505]/95');
-                nav.classList.add('py-4', 'bg-[#050505]/70', 'backdrop-blur-lg');
+                nav.classList.remove('shadow-lg', 'bg-[#050505]/95');
+                nav.classList.add('bg-[#050505]/70');
+                // Phóng to Navbar về nguyên bản khi ở trên cùng
+                navContainer.classList.remove('py-2', 'md:py-3');
+                navContainer.classList.add('py-5', 'md:py-6');
             }
         });
 
