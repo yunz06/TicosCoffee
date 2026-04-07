@@ -178,7 +178,108 @@
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #C81E3B; }
-    </style>
+    
+/* ===== RESPONSIVE & VISUAL OPTIMIZATION (AUTO GENERATED) ===== */
+
+/* Fluid typography */
+html {
+    font-size: clamp(14px, 0.9vw, 16px);
+}
+
+/* smoother scrolling */
+* {
+    scroll-behavior: smooth;
+}
+
+/* improve container width */
+.max-w-7xl,
+.max-w-\[1400px\],
+.max-w-\[1500px\] {
+    max-width: 1200px !important;
+}
+/* responsive section spacing */
+@media (max-width: 1024px) {
+    section {
+        padding-top: 6rem !important;
+        padding-bottom: 6rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding-top: 5rem !important;
+        padding-bottom: 5rem !important;
+    }
+}
+
+/* hero responsive scaling */
+@media (max-width: 768px) {
+    h1 {
+        line-height: 1.05 !important;
+    }
+}
+
+/* reduce oversized radius */
+@media (max-width: 768px) {
+    .rounded-\[3rem\] { border-radius: 1.5rem !important; }
+    .rounded-\[2\.5rem\] { border-radius: 1.25rem !important; }
+}
+
+/* better mobile navbar */
+@media (max-width: 768px) {
+    #nav-container {
+        padding-top: .75rem !important;
+        padding-bottom: .75rem !important;
+    }
+}
+
+/* improve hover performance */
+.menu-card {
+    will-change: transform;
+}
+
+/* smoother button hover */
+.btn-bubble {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* subtle card hover glow */
+.glass-card:hover {
+    box-shadow: 0 20px 40px rgba(0,0,0,.6), 0 0 25px rgba(200,30,59,.15);
+}
+
+/* mobile grid spacing */
+@media (max-width: 768px) {
+    .gap-20 { gap: 2rem !important; }
+    .gap-12 { gap: 1.5rem !important; }
+}
+
+/* menu padding mobile */
+@media (max-width: 768px) {
+    .menu-card { padding: 1.25rem !important; }
+}
+
+/* hero height fix mobile */
+@media (max-width: 768px) {
+    .min-h-screen { min-height: 90vh !important; }
+}
+
+/* image smoother */
+img {
+    image-rendering: auto;
+}
+
+/* subtle fade-in animation */
+@keyframes fadeInSoft {
+    from { opacity:0; transform: translateY(15px); }
+    to { opacity:1; transform: translateY(0); }
+}
+
+section {
+    animation: fadeInSoft .6s ease both;
+}
+
+</style>
 </head>
 <body class="antialiased selection:bg-ticos-primary selection:text-white">
 
