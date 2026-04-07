@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +58,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { 
@@ -77,135 +78,135 @@
     </script>
 
     <style>
-        body { font-family: 'Nunito', sans-serif; overflow-x: hidden; color: #ffffff; font-size: 1.125rem; background-color: #050505; }
+        body { font-family: 'Nunito', sans-serif; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease; }
         
-        .glass-panel {
-            background: rgba(15, 15, 15, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        .dark body { background-color: #050505; color: #ffffff; }
+        body { background-color: #f8fafc; color: #0f172a; }
+
+        /* Màn hình chờ */
+        #loader {
+            position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
+        .dark #loader { background-color: #050505; }
+        #loader { background-color: #ffffff; }
+
+        /* Kính cao cấp */
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.5s ease;
+        }
+        .dark .glass-panel { background: rgba(15, 15, 15, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05); }
 
         .glass-card {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
+            backdrop-filter: blur(12px);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
+        .dark .glass-card { background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
 
         /* Nút bấm hiệu ứng bong bóng 3D cực mượt */
         .btn-bubble {
             background: radial-gradient(circle at 30% 30%, #ff5e7e, #C81E3B 60%, #8A1538 100%);
             border-radius: 50px;
-            box-shadow: 
-                inset 2px 2px 6px rgba(255, 255, 255, 0.4),
-                inset -4px -4px 8px rgba(0, 0, 0, 0.5),
-                0 8px 20px rgba(200, 30, 59, 0.5);
+            box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.4), inset -4px -4px 8px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(200, 30, 59, 0.4);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: none;
-            color: white;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            border: none; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
         .btn-bubble:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 
-                inset 2px 2px 6px rgba(255, 255, 255, 0.5),
-                inset -4px -4px 8px rgba(0, 0, 0, 0.6),
-                0 12px 25px rgba(200, 30, 59, 0.7);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: inset 2px 2px 6px rgba(255, 255, 255, 0.5), inset -4px -4px 8px rgba(0, 0, 0, 0.6), 0 15px 25px rgba(200, 30, 59, 0.6);
         }
-        .btn-bubble:active {
-            transform: translateY(2px) scale(0.95);
-            box-shadow: 
-                inset 2px 2px 4px rgba(255, 255, 255, 0.2),
-                inset -2px -2px 4px rgba(0, 0, 0, 0.3),
-                0 4px 10px rgba(200, 30, 59, 0.3);
-        }
+        .btn-bubble:active { transform: translateY(2px) scale(0.95); box-shadow: 0 4px 10px rgba(200, 30, 59, 0.3); }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* Cải tiến tab menu giống nút bong bóng */
         .active-tab { 
             background: radial-gradient(circle at 30% 30%, #ff5e7e, #C81E3B 60%, #8A1538 100%) !important; 
-            color: white !important; 
-            border-color: transparent !important; 
-            transform: translateY(-4px); 
-            box-shadow: inset 1px 1px 4px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(200, 30, 59, 0.5) !important;
+            color: white !important; border-color: transparent !important; 
+            transform: translateY(-4px); box-shadow: inset 1px 1px 4px rgba(255, 255, 255, 0.3), 0 8px 20px rgba(200, 30, 59, 0.5) !important;
             border-radius: 30px !important;
         }
         
-        .menu-card { transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); transform-style: preserve-3d; }
-        .menu-card:hover { transform: translateY(-12px) rotateX(3deg); border-color: rgba(200, 30, 59, 0.4); box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(200, 30, 59, 0.2); background-color: rgba(25, 25, 25, 0.95); }
-        .menu-img { transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 15px 20px rgba(0,0,0,0.8)); }
+        .menu-card { transform-style: preserve-3d; }
+        .menu-card:hover { transform: translateY(-12px) rotateX(4deg); }
+        .dark .menu-card:hover { border-color: rgba(200, 30, 59, 0.4); box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(200, 30, 59, 0.2); background-color: rgba(25, 25, 25, 0.95); }
+        .menu-card:hover { border-color: rgba(200, 30, 59, 0.3); box-shadow: 0 25px 45px -5px rgba(0, 0, 0, 0.15), 0 0 20px rgba(200, 30, 59, 0.15); background-color: #ffffff; }
+        
+        .menu-img { transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 15px 20px rgba(0,0,0,0.15)); }
+        .dark .menu-img { filter: drop-shadow(0 15px 20px rgba(0,0,0,0.6)); }
         .menu-card:hover .menu-img { transform: scale(1.15) translateY(-8px); }
 
-        /* Marquee gradient fade 2 bên để ko bị vạch kẻ */
-        .marquee-wrapper { position: relative; overflow: hidden; background: #050505; padding: 1.5rem 0; }
-        .marquee-wrapper::before, .marquee-wrapper::after { content: ""; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; }
-        .marquee-wrapper::before { left: 0; background: linear-gradient(to right, #050505, transparent); }
-        .marquee-wrapper::after { right: 0; background: linear-gradient(to left, #050505, transparent); }
+        /* Marquee gradient */
+        .marquee-wrapper { position: relative; overflow: hidden; padding: 1.5rem 0; transition: background-color 0.5s ease; }
+        .dark .marquee-wrapper { background: #050505; } .marquee-wrapper { background: #f1f5f9; }
+        .marquee-wrapper::before, .marquee-wrapper::after { content: ""; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; transition: background 0.5s ease; }
+        .dark .marquee-wrapper::before { left: 0; background: linear-gradient(to right, #050505, transparent); }
+        .dark .marquee-wrapper::after { right: 0; background: linear-gradient(to left, #050505, transparent); }
+        .marquee-wrapper::before { left: 0; background: linear-gradient(to right, #f1f5f9, transparent); }
+        .marquee-wrapper::after { right: 0; background: linear-gradient(to left, #f1f5f9, transparent); }
         .marquee { white-space: nowrap; display: flex; align-items: center; }
         .marquee-content { display: inline-block; animation: scrollText 35s linear infinite; }
         @keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); filter: brightness(1.2); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .floating { animation: float 3.5s ease-in-out infinite; }
 
-        /* Hiệu ứng lơ lửng cho các nút Social bên góc phải */
-        @keyframes float-social {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.02); }
-        }
-        .social-bubble {
-            animation: float-social 3s ease-in-out infinite;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .social-bubble:hover {
-            animation-play-state: paused;
-            transform: scale(1.15) translateY(-5px);
-        }
-
-        /* Video Smooth Load giấu lúc bị giật */
-        @keyframes smoothLoad {
-            0% { opacity: 0; filter: blur(15px); }
-            100% { opacity: 0.5; filter: blur(0); }
-        }
-        #hero-video {
-            animation: smoothLoad 2.5s ease-in-out forwards;
-        }
+        @keyframes float-social { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-8px) scale(1.02); } }
+        .social-bubble { animation: float-social 3s ease-in-out infinite; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .social-bubble:hover { animation-play-state: paused; transform: scale(1.15) translateY(-5px) !important; }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #C81E3B; }
+        .dark ::-webkit-scrollbar-track { background: #050505; } ::-webkit-scrollbar-track { background: #e2e8f0; }
+        .dark ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C81E3B !important; }
+        
+        /* Overlays mượt mà */
+        .overlay-gradient-t, .overlay-gradient-b { transition: background 0.5s ease; }
+        .dark .overlay-gradient-t { background: linear-gradient(to bottom, #050505, transparent); }
+        .dark .overlay-gradient-b { background: linear-gradient(to top, #050505, transparent); }
+        .overlay-gradient-t { background: linear-gradient(to bottom, #f8fafc, transparent); }
+        .overlay-gradient-b { background: linear-gradient(to top, #f8fafc, transparent); }
+        
+        .dark .bg-mask { background: rgba(5, 5, 5, 0.85); }
+        .bg-mask { background: rgba(255, 255, 255, 0.8); }
     </style>
 </head>
 <body class="antialiased selection:bg-ticos-primary selection:text-white">
 
-    <div id="orderModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-all duration-300">
+    <div id="loader">
+        <div class="relative flex items-center justify-center">
+            <div class="w-24 h-24 border-4 border-ticos-primary/20 border-t-ticos-primary rounded-full animate-spin"></div>
+            <img src="decor/logo.png" class="absolute w-12 h-12 object-contain animate-pulse" alt="Loading">
+        </div>
+    </div>
+
+    <div id="orderModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black/60 dark:bg-black/90 backdrop-blur-md transition-all duration-300">
         <div class="glass-panel p-10 md:p-14 rounded-[3rem] w-full max-w-lg mx-4 text-center transform scale-95 transition-all duration-300 relative overflow-hidden" id="orderModalContent">
-            <div class="absolute -top-20 -right-20 w-40 h-40 bg-ticos-primary/30 rounded-full blur-[60px] pointer-events-none"></div>
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-ticos-primary/20 rounded-full blur-[60px] pointer-events-none"></div>
             
-            <h3 class="font-heading text-4xl font-black text-white mb-4 uppercase tracking-wide drop-shadow-md">NẠP "DOPING" NGAY</h3>
-            <p class="text-gray-300 font-body text-lg font-medium mb-8">Bấm là ship, không để cơn buồn ngủ cản bước!</p>
+            <h3 class="font-heading text-4xl font-black text-gray-900 dark:text-white mb-4 uppercase tracking-wide">NẠP "DOPING" NGAY</h3>
+            <p class="text-gray-600 dark:text-gray-300 font-body text-lg font-medium mb-8">Bấm là ship, không để cơn buồn ngủ cản bước!</p>
             
             <div id="geoLoading" class="my-8 py-4">
-                <i class="fa-solid fa-location-crosshairs fa-spin text-5xl text-ticos-primary mb-6 drop-shadow-[0_0_15px_rgba(200,30,59,0.8)]"></i>
-                <p class="text-gray-300 text-base font-bold uppercase tracking-widest">Đang quét trạm sạc gần nhất...</p>
+                <i class="fa-solid fa-location-crosshairs fa-spin text-5xl text-ticos-primary mb-6 drop-shadow-md"></i>
+                <p class="text-gray-700 dark:text-gray-300 text-base font-bold uppercase tracking-widest">Đang quét trạm sạc gần nhất...</p>
             </div>
 
-            <div id="manualSelect" class="my-8 hidden bg-black/40 p-6 rounded-[2rem] border border-white/5">
-                <p class="text-gray-300 text-sm font-bold mb-4 uppercase tracking-widest">Chọn cơ sở bạn muốn đặt:</p>
-                <select id="branchSelector" onchange="updateLinks()" class="w-full bg-[#111] border-2 border-gray-700 text-white text-lg rounded-2xl p-4 outline-none font-bold focus:border-ticos-primary transition cursor-pointer">
+            <div id="manualSelect" class="my-8 hidden bg-gray-100 dark:bg-black/40 p-6 rounded-[2rem] border border-gray-200 dark:border-white/5">
+                <p class="text-gray-600 dark:text-gray-300 text-sm font-bold mb-4 uppercase tracking-widest">Chọn cơ sở bạn muốn đặt:</p>
+                <select id="branchSelector" onchange="updateLinks()" class="w-full bg-white dark:bg-[#111] border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-lg rounded-2xl p-4 outline-none font-bold focus:border-ticos-primary transition cursor-pointer shadow-sm">
                     <option value="baucat">Ticos Bàu Cát (Tân Bình)</option>
                     <option value="pvt">Ticos Phan Văn Trị (Gò Vấp)</option>
                 </select>
             </div>
 
-            <div id="geoResult" class="my-8 hidden bg-ticos-primary/10 border border-ticos-primary/30 rounded-[2rem] p-6 shadow-inner">
-                <p class="text-ticos-primary text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-bolt text-yellow-400 mr-2"></i> Tọa độ tối ưu:</p>
-                <p id="nearestBranchName" class="text-white font-black text-2xl mb-2"></p>
-                <p id="distanceText" class="text-sm text-gray-400 font-medium"></p>
+            <div id="geoResult" class="my-8 hidden bg-ticos-primary/5 dark:bg-ticos-primary/10 border border-ticos-primary/20 dark:border-ticos-primary/30 rounded-[2rem] p-6">
+                <p class="text-ticos-primary text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-bolt text-yellow-500 mr-2"></i> Tọa độ tối ưu:</p>
+                <p id="nearestBranchName" class="text-gray-900 dark:text-white font-black text-2xl mb-2"></p>
+                <p id="distanceText" class="text-sm text-gray-500 dark:text-gray-400 font-medium"></p>
             </div>
             
             <div class="flex flex-col gap-4 mt-8 relative z-10">
@@ -216,7 +217,7 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/825/825508.png" class="w-7 h-7 filter invert" alt="Shopee"> ShopeeFood tới cứu
                 </a>
             </div>
-            <button onclick="closeOrderModal()" class="mt-8 text-gray-500 hover:text-white font-bold text-sm tracking-widest uppercase transition-colors relative z-10 border-b border-transparent hover:border-white pb-1">Hủy thao tác</button>
+            <button onclick="closeOrderModal()" class="mt-8 text-gray-500 hover:text-gray-900 dark:hover:text-white font-bold text-sm tracking-widest uppercase transition-colors relative z-10 border-b border-transparent hover:border-current pb-1">Hủy thao tác</button>
         </div>
     </div>
 
@@ -225,55 +226,62 @@
         <a href="https://m.me/ticoscoffee" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-[#0084FF] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(0,132,255,0.4)]" style="animation-delay: 0.2s;"><i class="fa-brands fa-facebook-messenger"></i></a>
         <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-[#1877F2] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(24,119,242,0.4)]" style="animation-delay: 0.4s;"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(188,24,136,0.4)]" style="animation-delay: 0.6s;"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-black border border-gray-700 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-[0_4px_10px_rgba(255,255,255,0.2)]" style="animation-delay: 0.8s;"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="social-bubble w-12 h-12 md:w-14 md:h-14 bg-black dark:border dark:border-gray-700 rounded-full flex items-center justify-center text-white text-xl md:text-2xl shadow-md" style="animation-delay: 0.8s;"><i class="fa-brands fa-tiktok"></i></a>
     </div>
 
-    <nav class="fixed w-full z-50 bg-[#050505]/70 backdrop-blur-lg border-b border-white/5 transition-all duration-500" id="navbar">
+    <nav class="fixed w-full z-50 bg-white/70 dark:bg-[#050505]/70 backdrop-blur-lg border-b border-gray-200 dark:border-white/5 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-5 md:py-6 flex items-center justify-between transition-all duration-500" id="nav-container">
             <a href="#" class="flex items-center gap-3 group">
-                <img src="decor/logo.png" alt="Ticos Logo" class="h-10 md:h-14 object-contain group-hover:scale-105 transition-transform drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                <img src="decor/logo.png" alt="Ticos Logo" class="h-10 md:h-12 object-contain group-hover:scale-105 transition-transform dark:drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
                 <div class="flex flex-col">
-                    <span class="text-3xl md:text-4xl font-heading font-black tracking-tight text-white leading-none">TICOS<span class="text-ticos-primary drop-shadow-[0_0_8px_rgba(200,30,59,0.6)]">.</span></span>
-                    <span class="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase mt-1 group-hover:text-ticos-primary transition-colors">Workspace & Cafe</span>
+                    <span class="text-2xl md:text-3xl font-heading font-black tracking-tight text-gray-900 dark:text-white leading-none">TICOS<span class="text-ticos-primary drop-shadow-[0_0_8px_rgba(200,30,59,0.4)]">.</span></span>
+                    <span class="text-[7px] md:text-[9px] font-bold text-gray-500 dark:text-gray-400 tracking-[0.2em] uppercase mt-1 group-hover:text-ticos-primary transition-colors">Workspace & Cafe</span>
                 </div>
             </a>
-            <div class="hidden lg:flex space-x-10 font-heading font-bold text-sm tracking-[0.15em] uppercase">
-                <a href="#about" class="text-gray-400 hover:text-white transition duration-300">Trang Chủ</a>
-                <a href="#menu" class="text-gray-400 hover:text-white transition duration-300">Menu Ticos</a>
-                <a href="#programs" class="text-gray-400 hover:text-white transition duration-300">Chương Trình</a>
-                <a href="#map" class="text-gray-400 hover:text-white transition duration-300">Chi Nhánh</a>
+            <div class="hidden lg:flex space-x-10 font-heading font-bold text-sm tracking-[0.1em] uppercase">
+                <a href="#about" class="text-gray-600 dark:text-gray-400 hover:text-ticos-primary dark:hover:text-white transition duration-300">Góc Cày Cuốc</a>
+                <a href="#menu" class="text-gray-600 dark:text-gray-400 hover:text-ticos-primary dark:hover:text-white transition duration-300">Bơm Máu</a>
+                <a href="#programs" class="text-gray-600 dark:text-gray-400 hover:text-ticos-primary dark:hover:text-white transition duration-300">Deal Hời</a>
+                <a href="#map" class="text-gray-600 dark:text-gray-400 hover:text-ticos-primary dark:hover:text-white transition duration-300">Tọa Độ</a>
             </div>
-            <button onclick="openOrderModal(event)" class="btn-bubble font-heading font-black px-6 py-2.5 md:px-8 md:py-3 text-xs md:text-sm tracking-widest uppercase flex items-center gap-2">
-                <i class="fa-solid fa-motorcycle text-lg"></i> <span class="hidden md:inline">GỌI SHIP NGAY</span>
-            </button>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 transition-all hover:scale-110 shadow-inner">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+                <button onclick="openOrderModal(event)" class="btn-bubble font-heading font-black px-5 py-2.5 md:px-7 md:py-3 text-xs md:text-sm tracking-widest uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-motorcycle text-base"></i> <span class="hidden md:inline">GỌI SHIP NGAY</span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 bg-[#050505]">
+    <section class="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden pt-20 bg-[#050505]">
         <div class="absolute inset-0 z-0">
-            <video autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover transform scale-105 opacity-0 filter contrast-125 saturate-50" id="hero-video" poster="decor/inside.jpg">
+            <video autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover transform scale-105 opacity-0 filter dark:contrast-125 dark:saturate-50 opacity-80" id="hero-video" poster="decor/inside.jpg">
                 <source src="decor/video-ticos.mp4" type="video/mp4">
             </video>
-            <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
-        </div>
+            <div class="absolute inset-0 overlay-gradient-t top-0 h-40"></div>
+            <div class="absolute inset-0 overlay-gradient-b bottom-0 h-40 top-auto"></div>
+            <div class="absolute inset-0 bg-black/40 dark:bg-black/20"></div> </div>
         
-        <div class="text-center px-4 z-10 max-w-6xl mt-16 relative">
-            <div class="inline-block px-8 py-3 rounded-[50px] mb-8 glass-panel gs-fade-down backdrop-blur-md border border-white/10">
-                <span class="font-heading font-black text-gray-300 text-sm md:text-base tracking-[0.3em] uppercase"><i class="fa-solid fa-fire text-ticos-primary mr-2 animate-pulse"></i> CỨU CÁNH CHO NHỮNG ĐÊM TRẮNG</span>
+        <div class="text-center px-4 z-10 w-full max-w-6xl relative mt-10">
+            <div class="inline-block px-6 md:px-8 py-2 md:py-3 rounded-[50px] mb-6 md:mb-8 glass-panel gs-fade-down backdrop-blur-md">
+                <span class="font-heading font-black text-gray-800 dark:text-gray-300 text-xs md:text-sm tracking-[0.3em] uppercase"><i class="fa-solid fa-fire text-ticos-primary mr-2 animate-pulse"></i> Trạm Sạc Cho Những Đêm Trắng</span>
             </div>
             
-            <h1 class="font-heading text-6xl md:text-[8rem] lg:text-[11rem] font-black text-white uppercase leading-[0.9] tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] gs-fade-up">CHẠY</h1>
-            <h1 class="font-heading text-5xl md:text-[6rem] lg:text-[8rem] font-black uppercase mt-2 mb-10 gs-fade-up bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-ticos-primary drop-shadow-[0_5px_20px_rgba(200,30,59,0.4)]" style="transition-delay: 100ms;">DEADLINE</h1>
+            <h1 class="font-heading text-6xl sm:text-[7rem] md:text-[9rem] lg:text-[11rem] font-black text-white uppercase leading-[0.85] tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] gs-fade-up">CHẠY</h1>
+            <h1 class="font-heading text-4xl sm:text-[5rem] md:text-[7rem] lg:text-[8rem] font-black uppercase mt-2 mb-8 md:mb-10 gs-fade-up bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-ticos-primary drop-shadow-[0_5px_20px_rgba(200,30,59,0.4)]" style="transition-delay: 100ms;">DEADLINE</h1>
             
-            <p class="font-body text-gray-300 font-medium text-lg md:text-2xl max-w-3xl mx-auto mb-12 gs-fade-up leading-relaxed px-4 text-shadow-md" style="transition-delay: 200ms;">
+            <p class="font-body text-gray-200 dark:text-gray-300 font-medium text-base md:text-xl max-w-3xl mx-auto mb-10 md:mb-12 gs-fade-up leading-relaxed px-4 text-shadow-md" style="transition-delay: 200ms;">
                 Sắp tới giờ G mà project vẫn ngập trong bug? Deadline dí sát nút? Cứ vác laptop ra đây! Điều hòa buốt lạnh, wifi căng đét, 1 mét vuông 10 ổ cắm. Chỉ chờ bạn gõ phím cạch cạch thăng hoa ý tưởng.
             </p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-6 px-6 gs-fade-up" style="transition-delay: 300ms;">
-                <button onclick="openOrderModal(event)" class="btn-bubble px-10 py-5 md:px-12 md:py-5 font-heading font-black text-lg uppercase tracking-widest w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 px-6 gs-fade-up" style="transition-delay: 300ms;">
+                <button onclick="openOrderModal(event)" class="btn-bubble px-8 py-4 md:px-12 md:py-5 font-heading font-black text-base md:text-lg uppercase tracking-widest w-full sm:w-auto">
                     BƠM CAFFEINE NGAY
                 </button>
-                <a href="#menu" class="glass-panel px-10 py-5 md:px-12 md:py-5 rounded-[50px] border border-white/20 font-heading font-black text-lg text-white uppercase tracking-widest hover:bg-white hover:text-black transition-all w-full sm:w-auto">
+                <a href="#menu" class="glass-panel px-8 py-4 md:px-12 md:py-5 rounded-[50px] font-heading font-black text-base md:text-lg text-gray-900 dark:text-white uppercase tracking-widest hover:bg-white dark:hover:bg-white dark:hover:text-black transition-all w-full sm:w-auto text-center">
                     XEM THỰC ĐƠN
                 </a>
             </div>
@@ -281,7 +289,7 @@
     </section>
 
     <div class="marquee-wrapper z-20">
-        <div class="marquee font-heading text-2xl md:text-4xl text-gray-500 font-black tracking-[0.25em] uppercase">
+        <div class="marquee font-heading text-xl md:text-3xl text-gray-400 dark:text-gray-500 font-black tracking-[0.25em] uppercase">
             <div class="marquee-content">
                 CHỐN DUNG THÂN CỦA CÚ ĐÊM ✦ MÁY LẠNH CHẠY MAX CÔNG SUẤT ✦ ĐIỆN PHỦ SÓNG TẬN BÀN ✦ MỞ CỬA THÔNG TỪ ĐÊM TỚI SÁNG ✦ 
             </div>
@@ -291,54 +299,54 @@
         </div>
     </div>
 
-    <section id="about" class="py-32 px-6 relative overflow-hidden bg-fixed bg-cover bg-center" style="background-image: url('decor/1.png');">
-        <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[#050505]/80 backdrop-blur-[4px] z-0"></div>
+    <section id="about" class="min-h-[100dvh] flex flex-col justify-center py-20 px-6 relative overflow-hidden bg-fixed bg-cover bg-center" style="background-image: url('decor/1.png');">
+        <div class="absolute inset-x-0 top-0 h-32 md:h-40 overlay-gradient-t z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 md:h-40 overlay-gradient-b z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-mask backdrop-blur-[6px] z-0 transition-colors duration-500"></div>
         
-        <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-20">
+        <div class="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-20">
             <div class="lg:col-span-5 gs-fade-right">
-                <span class="text-ticos-primary font-black tracking-[0.4em] uppercase text-sm mb-6 block drop-shadow-md">Nơi Ý Tưởng Được Giải Cứu</span>
-                <h2 class="font-heading text-5xl md:text-[5rem] font-black mb-8 leading-tight uppercase text-white drop-shadow-lg">GÓC TRÚ ẨN <br><span class="text-gray-400">HOÀN HẢO</span></h2>
+                <span class="text-ticos-primary font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-4 md:mb-6 block drop-shadow-md">Nơi Ý Tưởng Được Giải Cứu</span>
+                <h2 class="font-heading text-4xl md:text-[4rem] lg:text-[5rem] font-black mb-6 md:mb-8 leading-tight uppercase text-gray-900 dark:text-white drop-shadow-lg">GÓC TRÚ ẨN <br><span class="text-gray-500 dark:text-gray-400">HOÀN HẢO</span></h2>
                 
-                <p class="text-gray-300 text-xl font-medium leading-relaxed border-l-[4px] border-ticos-primary pl-6 mb-12 drop-shadow-md">
-                    Trốn khỏi 4 bức tường chật hẹp ở nhà đi. Ticos đập tan sự bí bách bằng không gian thô mộc chuẩn Industrial. Bàn ghế thiết kế chuyên dụng để ngồi lâu không đau lưng, đèn vàng êm ái xoa dịu đôi mắt mỏi mệt. Ngồi xuống là chỉ có làm việc hăng say!
+                <p class="text-gray-700 dark:text-gray-300 text-lg md:text-xl font-medium leading-relaxed border-l-[4px] border-ticos-primary pl-5 md:pl-6 mb-8 md:mb-12">
+                    Trốn khỏi 4 bức tường chật hẹp ở nhà đi. Ticos đập tan sự bí bách bằng không gian thô mộc chuẩn Industrial. Bàn ghế thiết kế chuyên dụng để ngồi lâu không đau lưng, ánh đèn êm ái xoa dịu đôi mắt.
                 </p>
 
-                <div class="grid grid-cols-2 gap-6 md:gap-8">
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-ticos-primary/40 transition-colors border border-white/5">
-                        <i class="fa-regular fa-clock text-4xl text-ticos-primary mb-6 floating"></i>
-                        <h4 class="font-heading font-black text-xl text-white mb-2">MỞ CỬA XUYÊN ĐÊM</h4>
-                        <p class="text-sm text-gray-400 font-medium">Ban ngày ngủ, ban đêm cày? Quán luôn sáng đèn chờ bạn.</p>
+                <div class="grid grid-cols-2 gap-4 md:gap-6">
+                    <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] hover:border-ticos-primary/40 group">
+                        <i class="fa-regular fa-clock text-3xl md:text-4xl text-ticos-primary mb-4 md:mb-6 floating"></i>
+                        <h4 class="font-heading font-black text-lg md:text-xl text-gray-900 dark:text-white mb-2">MỞ CỬA XUYÊN ĐÊM</h4>
+                        <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium">Quán luôn sáng đèn chờ bạn.</p>
                     </div>
-                    <div class="glass-panel p-8 rounded-[2rem] hover:border-ticos-primary/40 transition-colors border border-white/5">
-                        <i class="fa-solid fa-plug-circle-check text-4xl text-ticos-primary mb-6 floating" style="animation-delay: 1s;"></i>
-                        <h4 class="font-heading font-black text-xl text-white mb-2">ĐIỆN DƯ XÀI</h4>
-                        <p class="text-sm text-gray-400 font-medium">Cắm sạc laptop, sạc điện thoại cùng lúc thoải mái, không sợ sập nguồn.</p>
+                    <div class="glass-panel p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] hover:border-ticos-primary/40 group">
+                        <i class="fa-solid fa-plug-circle-check text-3xl md:text-4xl text-ticos-primary mb-4 md:mb-6 floating" style="animation-delay: 1s;"></i>
+                        <h4 class="font-heading font-black text-lg md:text-xl text-gray-900 dark:text-white mb-2">ĐIỆN DƯ XÀI</h4>
+                        <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium">Sạc laptop, điện thoại thoải mái.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="lg:col-span-7 gs-fade-left w-full h-[500px] md:h-[650px] relative">
-                <div class="absolute top-6 right-6 z-30 bg-black/60 backdrop-blur-md px-5 py-2.5 rounded-full text-white text-xs md:text-sm font-bold tracking-widest border border-white/10 flex items-center gap-2 pointer-events-none shadow-xl">
-                    <i class="fa-solid fa-arrows-left-right text-ticos-primary animate-pulse text-lg"></i> Vuốt để khám phá
+            <div class="lg:col-span-7 gs-fade-left w-full h-[350px] sm:h-[450px] lg:h-[550px] relative">
+                <div class="absolute top-4 right-4 md:top-6 md:right-6 z-30 bg-white/80 dark:bg-black/60 backdrop-blur-md px-4 py-2 md:px-5 md:py-2.5 rounded-full text-gray-900 dark:text-white text-[10px] md:text-xs font-bold tracking-widest border border-gray-200 dark:border-white/10 flex items-center gap-2 pointer-events-none shadow-xl">
+                    <i class="fa-solid fa-arrows-left-right text-ticos-primary animate-pulse text-base md:text-lg"></i> Vuốt để khám phá
                 </div>
                 
-                <div class="swiper spaceSwiper w-full h-full rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/5">
+                <div class="swiper spaceSwiper w-full h-full rounded-[2rem] md:rounded-[3rem] shadow-[0_15px_40px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-gray-200 dark:border-white/5">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="decor/1.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/2.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/4.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/5.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/6.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/7.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/inside.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/lầu1 1.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/lầu2 1.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/lầu2 2.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/lầu2 3.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/lầu2 4.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
-                        <div class="swiper-slide"><img src="decor/outside lầu 2.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/1.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/2.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/4.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/5.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/6.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/7.png" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/inside.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/lầu1 1.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/lầu2 1.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/lầu2 2.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/lầu2 3.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/lầu2 4.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
+                        <div class="swiper-slide"><img loading="lazy" src="decor/outside lầu 2.jpg" class="w-full h-full object-cover cursor-grab hover:scale-105 transition-transform duration-700" data-fancybox="space-gallery"></div>
                     </div>
                     <div class="swiper-pagination space-pagination"></div>
                 </div>
@@ -346,802 +354,759 @@
         </div>
     </section>
 
-    <section id="menu" class="py-32 relative bg-fixed bg-cover bg-center" style="background-image: url('decor/6.png');">
-        <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[#050505]/85 backdrop-blur-[3px] z-0"></div>
+    <section id="menu" class="py-24 relative bg-fixed bg-cover bg-center" style="background-image: url('decor/6.png');">
+        <div class="absolute inset-x-0 top-0 h-40 overlay-gradient-t z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-40 overlay-gradient-b z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-mask backdrop-blur-[5px] z-0 transition-colors duration-500"></div>
 
         <div class="max-w-[1500px] mx-auto px-4 md:px-8 relative z-20">
-            <div class="text-center mb-16 gs-fade-down">
-                <span class="text-ticos-primary font-black tracking-[0.5em] text-sm uppercase block mb-4">Đánh Thức Nơ-ron Thần Kinh</span>
-                <h2 class="font-heading text-5xl md:text-[5.5rem] font-black uppercase text-white drop-shadow-lg">THỰC ĐƠN <br><span class="text-gray-500">BƠM MÁU</span></h2>
-                <p class="text-gray-400 mt-6 max-w-2xl mx-auto text-xl font-medium leading-relaxed">Cần tỉnh táo? Có ngay ly Đen Đá đậm đặc. Đói lả người? Có ngay Bánh Tráng Tóp Mỡ giòn rụm nhai vui tai. Chọn món nhanh rồi quay lại gõ code tiếp nào!</p>
+            <div class="text-center mb-12 md:mb-16 gs-fade-down">
+                <span class="text-ticos-primary font-black tracking-[0.5em] text-xs md:text-sm uppercase block mb-3 md:mb-4">Đánh Thức Nơ-ron Thần Kinh</span>
+                <h2 class="font-heading text-4xl md:text-[5rem] font-black uppercase text-gray-900 dark:text-white drop-shadow-lg">THỰC ĐƠN <br><span class="text-gray-400 dark:text-gray-500">BƠM MÁU</span></h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-4 md:mt-6 max-w-2xl mx-auto text-base md:text-lg font-medium leading-relaxed px-2">Cần tỉnh táo? Đã có Cà phê. Đói lả người? Có ngay Mồi nhắm. Chọn món nhanh rồi quay lại gõ code tiếp nào!</p>
             </div>
 
-            <div class="flex overflow-x-auto snap-x gap-2 mb-16 no-scrollbar gs-fade-up sticky top-[90px] md:top-[100px] z-40 bg-[#111111]/60 p-2 md:p-3 justify-start md:justify-center border border-white/10 backdrop-blur-xl transition-all duration-300 rounded-[2rem] md:rounded-full w-[95%] md:w-max mx-auto shadow-[0_15px_40px_rgba(0,0,0,0.6)]">
-                <button onclick="filterMenu('all', this)" class="snap-start active-tab flex-none px-6 py-3 rounded-full bg-transparent text-white font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all">QUẤT HẾT</button>
-                <button onclick="filterMenu('caphe', this)" class="snap-start flex-none px-6 py-3 rounded-full bg-transparent text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-white/10 hover:text-white">CÀ PHÊ TỈNH</button>
-                <button onclick="filterMenu('matcha', this)" class="snap-start flex-none px-6 py-3 rounded-full bg-transparent text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-white/10 hover:text-white">MATCHA</button>
-                <button onclick="filterMenu('trasua', this)" class="snap-start flex-none px-6 py-3 rounded-full bg-transparent text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-white/10 hover:text-white">TRÀ SỮA BÉO</button>
-                <button onclick="filterMenu('tra', this)" class="snap-start flex-none px-6 py-3 rounded-full bg-transparent text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-white/10 hover:text-white">TRÀ THANH NHIỆT</button>
-                <button onclick="filterMenu('banh', this)" class="snap-start flex-none px-6 py-3 rounded-full bg-transparent text-gray-400 font-heading font-black text-sm md:text-base tracking-widest uppercase transition-all hover:bg-white/10 hover:text-white">LẤP ĐẦY BAO TỬ</button>
+            <div class="flex overflow-x-auto snap-x gap-2 mb-12 md:mb-16 no-scrollbar gs-fade-up sticky top-[80px] md:top-[90px] z-40 glass-panel p-2 md:p-3 justify-start md:justify-center rounded-[2rem] md:rounded-full w-[95%] md:w-max mx-auto shadow-2xl">
+                <button onclick="filterMenu('all', this)" class="snap-start active-tab flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-white font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all">QUẤT HẾT</button>
+                <button onclick="filterMenu('caphe', this)" class="snap-start flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-gray-600 dark:text-gray-400 font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white">CÀ PHÊ TỈNH</button>
+                <button onclick="filterMenu('matcha', this)" class="snap-start flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-gray-600 dark:text-gray-400 font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white">MATCHA</button>
+                <button onclick="filterMenu('trasua', this)" class="snap-start flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-gray-600 dark:text-gray-400 font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white">TRÀ SỮA BÉO</button>
+                <button onclick="filterMenu('tra', this)" class="snap-start flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-gray-600 dark:text-gray-400 font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white">TRÀ THANH NHIỆT</button>
+                <button onclick="filterMenu('banh', this)" class="snap-start flex-none px-5 py-2.5 md:px-6 md:py-3 rounded-full bg-transparent text-gray-600 dark:text-gray-400 font-heading font-black text-xs md:text-sm tracking-widest uppercase transition-all hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white">LẤP ĐẦY BAO TỬ</button>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 min-h-[500px]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 min-h-[500px]">
                 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê đen.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê đen.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Đen</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Đen</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Mở mắt trao tráo</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">36.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">36.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê sữa.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê sữa.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Sữa</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Sữa</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đắng xíu ngọt nhiều</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
                     <div class="absolute top-4 right-4 bg-ticos-primary text-white font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform rotate-6">HOT</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/bạc xỉu.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/bạc xỉu.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Bạc Xỉu</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Bạc Xỉu</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Dành cho hệ sợ đắng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
                     <div class="absolute top-4 right-4 bg-yellow-500 text-black font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform -rotate-6">BEST</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê sữa kem muối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê sữa kem muối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Sữa Kem Muối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Sữa Kem Muối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Mặn mặn béo béo</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê đen kem muối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê đen kem muối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Đen Kem Muối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Đen Kem Muối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đậm đà cuốn lưỡi</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/americano.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/americano.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Americano</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Americano</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Chuẩn gu Tây thức trắng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/latte.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/latte.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Latte</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Latte</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Nhẹ nhàng êm ái</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê chocolate.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê chocolate.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Choco</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Choco</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đắng ngọt đan xen</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê latte chuối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê latte chuối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Latte Chuối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Latte Chuối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Thơm lừng vị trái cây</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê hạnh nhân.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê hạnh nhân.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Hạnh Nhân</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cà Phê Hạnh Nhân</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Bùi bùi thơm béo</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cà phê hạnh nhân kem phô mai.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cà phê hạnh nhân kem phô mai.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Hạnh Nhân Phô Mai</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Hạnh Nhân Phô Mai</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đỉnh cao béo ngậy</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cacao classic (hot).webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cacao classic (hot).webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cacao Classic</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cacao Classic</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ấm bụng đêm khuya</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/cacao hạnh nhân.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/cacao hạnh nhân.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cacao Hạnh Nhân</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cacao Hạnh Nhân</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ngọt ngào hạt bùi</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/bơ ca cao kem muối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/bơ ca cao kem muối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Bơ Cacao Muối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Bơ Cacao Muối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Lạ miệng cuốn hút</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/bơ hạnh nhân kem muối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/bơ hạnh nhân kem muối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Bơ Hạnh Nhân Muối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Bơ Hạnh Nhân Muối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đậm vị khó quên</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item caphe glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
+                <div class="menu-item caphe glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
                         <div class="absolute inset-0 bg-ticos-primary/5 rounded-[2rem]"></div>
-                        <img src="menu/phô mai chocolate.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                        <img loading="lazy" src="menu/phô mai chocolate.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Phô Mai Chocolate</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Phô Mai Chocolate</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Càng uống càng mê</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
                     <div class="absolute top-4 right-4 bg-ticos-primary text-white font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform rotate-6">HOT</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte kem mây bồng bềnh.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte kem mây bồng bềnh.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Kem Mây</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Kem Mây</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Bồng bềnh xả stress</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte đậm chất.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte đậm chất.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Đậm Chất</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Đậm Chất</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Dành cho tín đồ matcha real</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">54.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">54.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte dịu nhẹ.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte dịu nhẹ.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Dịu Nhẹ</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Dịu Nhẹ</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Thanh tao dễ mến</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">54.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">54.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte caramel.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte caramel.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Caramel</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Caramel</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Thơm lừng đường cháy</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte chuối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte chuối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Chuối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Chuối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Tưởng dị mà ngon không tưởng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item matcha glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#263a26] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha latte vanila.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item matcha glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-green-50 dark:bg-[#1a261a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-green-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha latte vanila.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Vanila</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha Vanila</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ngọt ngào thanh mát</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">64.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
                     <div class="absolute top-4 right-4 bg-yellow-500 text-black font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform -rotate-6">BEST</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa nguyên lá.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa nguyên lá.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Nguyên Lá</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Nguyên Lá</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đậm trà êm sữa</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/olong sữa ba lá.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/olong sữa ba lá.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Sữa Ba Lá</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Sữa Ba Lá</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Hương thơm lan tỏa</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa đường nâu.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa đường nâu.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Đường Nâu</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Đường Nâu</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Nạp đường là nạp idea</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">49.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
                     <div class="absolute top-4 right-4 bg-ticos-primary text-white font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform rotate-6">NEW</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa latte bơ.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa latte bơ.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Latte Bơ</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Sữa Latte Bơ</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Béo ngậy tỉnh người</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">56.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">56.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa chocolate chuối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa chocolate chuối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">TS Chocolate Chuối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">TS Chocolate Chuối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Cặp bài trùng hoàn hảo</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">56.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">56.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa nguyên lá kem phô mai.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa nguyên lá kem phô mai.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Nguyên Lá Phô Mai</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Nguyên Lá Phô Mai</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Kem cheese là chân ái</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/olong sữa ba lá kem phô mai.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/olong sữa ba lá kem phô mai.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Ba Lá Phô Mai</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Ba Lá Phô Mai</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Gấp đôi độ thơm béo</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item trasua glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2c22] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà sữa đường nâu kem phô mai.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item trasua glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-orange-50 dark:bg-[#2b211a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-orange-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà sữa đường nâu kem phô mai.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Đường Nâu Phô Mai</h3>
-                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Kéo mood tụt quần lên đỉnh</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Đường Nâu Phô Mai</h3>
+                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Kéo mood lên đỉnh</p>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
                     <div class="absolute top-4 right-4 bg-ticos-primary text-white font-heading font-black text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest z-10 shadow-lg transform rotate-6">HOT</div>
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà vải hoa hồng.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà vải hoa hồng.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Vải Hoa Hồng</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Vải Hoa Hồng</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Thanh tao mộng mơ</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà đào hồng chanh dây.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà đào hồng chanh dây.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Đào Chanh Dây</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Đào Chanh Dây</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Chua chua ngọt ngọt</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà dâu rừng nhiệt đới.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà dâu rừng nhiệt đới.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Dâu Rừng Nhiệt Đới</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Dâu Rừng Nhiệt Đới</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Tươi mát bừng bừng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">57.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">57.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà lài đác thơm.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà lài đác thơm.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Lài Đác Thơm</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Lài Đác Thơm</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Topping nhai mỏi hàm</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà khế hoa nhãn.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà khế hoa nhãn.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Khế Hoa Nhãn</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Trà Khế Hoa Nhãn</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Chua thanh giải nóng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/trà olong bưởi mật ong chanh đào.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/trà olong bưởi mật ong chanh đào.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Bưởi Chanh</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Olong Bưởi Chanh</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Đánh bay cái nóng Sài Gòn</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">59.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/Punica.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/Punica.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Ép Punica</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Ép Punica</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Tràn trề vitamin C</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">68.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">68.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item tra glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a2020] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/zona gialla.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item tra glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-red-50 dark:bg-[#261616] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-red-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/zona gialla.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Ép Zona Gialla</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Ép Zona Gialla</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Uống cho da đẹp rạng ngời</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">68.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">68.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item coldbrew glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-white/5 rounded-[2rem]"></div>
-                        <img src="menu/cold brew classic.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item coldbrew glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/cold brew classic.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cold Brew Classic</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cold Brew Classic</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Cà phê ủ lạnh thanh tao</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">69.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">69.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item coldbrew glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-white/5 rounded-[2rem]"></div>
-                        <img src="menu/cold brew lemonade.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item coldbrew glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-gray-100 dark:bg-[#111] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/cold brew lemonade.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Cold Brew Lemonade</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Cold Brew Lemonade</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Sảng khoái buốt óc</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">79.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">79.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/Bánh mì chà bông phô mai.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/Bánh mì chà bông phô mai.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Bánh Mì Chà Bông</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Bánh Mì Chà Bông</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Cứu đói vững dạ dày</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/croissant chocolate.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/croissant chocolate.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Croissant Choco</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Croissant Choco</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ngập ngụa nhân choco</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/croissant trứng muối.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/croissant trứng muối.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Croissant Trứng Muối</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Croissant Trứng Muối</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Sốt chảy rần rần</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh khoai lang mochi.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh khoai lang mochi.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Khoai Lang Mochi</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Khoai Lang Mochi</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Dẻo quẹo kéo dài</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">35.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">35.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/matcha letao.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/matcha letao.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha LeTAO</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Matcha LeTAO</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Mềm xèo tan trong miệng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/yogurt cheese.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/yogurt cheese.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Yogurt Cheese</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Yogurt Cheese</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Chua ngọt đỡ ngán</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/tiramisu.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/tiramisu.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">Bánh Tiramisu</h3>
-                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Một chút cafein bừng tỉnh</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">Bánh Tiramisu</h3>
+                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Nhấn phím ảo ma canada</p>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">45.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng dẻo mỡ hành tóp mỡ.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng dẻo mỡ hành tóp mỡ.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Dẻo Mỡ Hành</h3>
-                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Thơm thơm mùi hành</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">29.000đ</span>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Dẻo Mỡ Hành</h3>
+                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Nhai mỏi cơ hàm</p>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">29.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng dẻo sate tỏi.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng dẻo sate tỏi.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Dẻo Sate Tỏi</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Dẻo Sate Tỏi</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Cay the tỉnh mộng</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">29.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">29.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng gà quay.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng gà quay.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Gà Quay</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Gà Quay</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Xé dai dai mặn ngọt</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng tỏi bò.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng tỏi bò.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Tỏi Bò</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Tỏi Bò</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Combo bò tỏi cháy máy</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng phô mai hoàng kim.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng phô mai hoàng kim.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Phô Mai</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Phô Mai</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Lắc phô mai ngập mặt</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng thập cẩm siêu vị.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng thập cẩm siêu vị.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Thập Cẩm</h3>
-                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ăn tạm chống đói</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Thập Cẩm</h3>
+                        <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ăn tạp chống đói</p>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng cuộn bò.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng cuộn bò.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Bò</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Bò</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Cuộn tròn tình yêu</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
                 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng cuộn tơm bơ.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng cuộn tơm bơ.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Tôm Bơ</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Tôm Bơ</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Ngậy bơ ngập mồm</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">39.000đ</span>
                     </div>
                 </div>
 
-                <div class="menu-item banh glass-card rounded-[2.5rem] p-8 shadow-xl menu-card gs-fade-up relative border border-white/5 hidden">
-                    <div class="aspect-square bg-[#111] rounded-[2rem] p-6 mb-6 flex items-center justify-center overflow-hidden border border-white/5 relative mt-2">
-                        <div class="absolute inset-0 bg-[#3a3022] rounded-[2rem] opacity-30"></div>
-                        <img src="menu/bánh tráng cuộn.webp" class="menu-img w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,1)]">
+                <div class="menu-item banh glass-card rounded-[2.5rem] p-6 lg:p-8 menu-card gs-fade-up relative hidden">
+                    <div class="aspect-square bg-yellow-50 dark:bg-[#2b241a] rounded-[2rem] p-5 mb-5 flex items-center justify-center overflow-hidden border border-yellow-200 dark:border-white/5 relative mt-2 transition-colors">
+                        <img loading="lazy" src="menu/bánh tráng cuộn.webp" class="menu-img w-full h-full object-contain">
                     </div>
                     <div class="text-center">
-                        <h3 class="font-heading text-2xl font-black text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Truyền Thống</h3>
+                        <h3 class="font-heading text-xl lg:text-2xl font-black text-gray-900 dark:text-white uppercase tracking-wide mb-1 line-clamp-1">BT Cuộn Truyền Thống</h3>
                         <p class="text-xs text-gray-500 mb-3 font-bold uppercase tracking-wider">Classic không lầm lỗi</p>
-                        <span class="text-3xl font-heading font-black text-ticos-primary block">35.000đ</span>
+                        <span class="text-2xl lg:text-3xl font-heading font-black text-ticos-primary block">35.000đ</span>
                     </div>
                 </div>
 
             </div>
             
             <div class="text-center mt-20 gs-fade-up relative z-10">
-                <a href="decor/Menu Ticos.png" data-fancybox="menu-full" class="btn-bubble font-heading text-xl font-black text-white uppercase tracking-[0.2em] py-5 px-14 rounded-full transition-all cursor-pointer inline-block">XEM FULL LIST MÓN</a>
+                <a href="decor/Menu Ticos.png" data-fancybox="menu-full" class="btn-bubble font-heading text-lg md:text-xl font-black text-white uppercase tracking-[0.2em] py-4 px-10 md:py-5 md:px-14 rounded-full transition-all cursor-pointer inline-block shadow-xl">XEM FULL LIST MÓN</a>
             </div>
         </div>
     </section>
 
-    <section id="programs" class="py-32 relative overflow-hidden bg-fixed bg-cover bg-center" style="background-image: url('decor/5.png');">
-        <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-[#050505]/85 backdrop-blur-[2px] z-0"></div>
+    <section id="programs" class="min-h-[100dvh] flex flex-col justify-center py-20 px-6 relative overflow-hidden bg-fixed bg-cover bg-center" style="background-image: url('decor/5.png');">
+        <div class="absolute inset-x-0 top-0 h-32 md:h-40 overlay-gradient-t z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 md:h-40 overlay-gradient-b z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-mask backdrop-blur-[4px] z-0 transition-colors duration-500"></div>
         
-        <div class="max-w-7xl mx-auto px-6 relative z-20">
-            <div class="text-center mb-20 gs-fade-up">
-                <span class="text-ticos-primary font-black tracking-[0.4em] text-sm uppercase block mb-3">Ting Ting An Ủi Tinh Thần</span>
-                <h2 class="font-heading text-5xl md:text-[6rem] font-black text-white uppercase drop-shadow-2xl">ĐẶC QUYỀN <br><span class="text-gray-500">KẺ THỨC THỜI</span></h2>
-                <p class="text-gray-400 mt-6 max-w-2xl mx-auto text-lg font-medium leading-relaxed">Cày bục mặt thì cũng phải để hầu bao thở. Ticos tung deal cực xịn, rủ ngay hội bạn cùng chung số phận ra đây chia sẻ nỗi đau deadline nào!</p>
+        <div class="max-w-7xl w-full mx-auto relative z-20">
+            <div class="text-center mb-12 md:mb-16 gs-fade-up">
+                <span class="text-ticos-primary font-black tracking-[0.4em] text-xs md:text-sm uppercase block mb-3">Ting Ting An Ủi Tinh Thần</span>
+                <h2 class="font-heading text-4xl md:text-[5rem] lg:text-[6rem] font-black text-gray-900 dark:text-white uppercase drop-shadow-2xl leading-none">ĐẶC QUYỀN <br><span class="text-gray-500">KẺ THỨC THỜI</span></h2>
+                <p class="text-gray-600 dark:text-gray-400 mt-4 md:mt-6 max-w-2xl mx-auto text-base md:text-lg font-medium leading-relaxed">Cày bục mặt thì cũng phải để hầu bao thở. Ticos tung deal cực xịn, rủ ngay hội bạn cùng chung số phận ra đây chia sẻ nỗi đau deadline nào!</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="bg-[#111] rounded-[2.5rem] overflow-hidden shadow-2xl gs-fade-up hover:border-ticos-primary/50 transition-all group border border-white/5">
-                    <div class="overflow-hidden relative bg-[#050505] flex items-center justify-center h-64 md:h-[350px]">
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
-                        <img src="decor/mua 3 tặng 1.jpg" onerror="this.onerror=null; this.src='mua 3 tặng 1.jpg';" class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="bg-white dark:bg-[#111] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl gs-fade-up hover:border-ticos-primary/50 transition-all group border border-gray-200 dark:border-white/5">
+                    <div class="overflow-hidden relative bg-gray-100 dark:bg-[#050505] flex items-center justify-center h-56 md:h-72 lg:h-[350px]">
+                        <img loading="lazy" src="decor/mua 3 tặng 1.jpg" onerror="this.onerror=null; this.src='mua 3 tặng 1.jpg';" class="w-full h-full object-contain group-hover:scale-105 transition duration-700 p-2 md:p-4">
                     </div>
-                    <div class="p-10 relative bg-[#111] z-20 border-t border-white/5">
-                        <div class="inline-block bg-ticos-primary/10 text-ticos-primary font-black text-xs uppercase tracking-widest mb-4 px-4 py-2 rounded-full border border-ticos-primary/20"><i class="fa-regular fa-clock mr-2"></i> Khung Giờ: 14H - 17H</div>
-                        <h3 class="font-heading text-3xl font-black text-white uppercase mb-4 leading-snug">RỦ ĐỒNG BỌN 3 NGƯỜI <br> TẶNG NGAY 1 MỒI</h3>
-                        <p class="text-gray-400 text-base leading-relaxed font-medium">Bơm doping cho cả nhóm gõ phím nhanh hơn! Cứ gọi 3 ly Trà hoặc Matcha size L là Ticos ném ngay ra bàn 1 dĩa Bánh Tráng Tóp Mỡ giòn rụm nhai cực cuốn.</p>
+                    <div class="p-6 md:p-10 relative bg-white dark:bg-[#111] z-20 border-t border-gray-100 dark:border-white/5">
+                        <div class="inline-block bg-ticos-primary/10 text-ticos-primary font-black text-[10px] md:text-xs uppercase tracking-widest mb-3 md:mb-4 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-ticos-primary/20"><i class="fa-regular fa-clock mr-2"></i> Khung Giờ: 14H - 17H</div>
+                        <h3 class="font-heading text-2xl md:text-3xl font-black text-gray-900 dark:text-white uppercase mb-3 md:mb-4 leading-snug">RỦ ĐỒNG BỌN 3 NGƯỜI <br> TẶNG NGAY 1 MỒI</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed font-medium">Bơm doping cho cả nhóm gõ phím nhanh hơn! Cứ gọi 3 ly Trà hoặc Matcha size L là Ticos ném ngay ra bàn 1 dĩa Bánh Tráng Tóp Mỡ giòn rụm nhai cực cuốn.</p>
                     </div>
                 </div>
 
-                <div class="bg-[#111] rounded-[2.5rem] overflow-hidden shadow-2xl gs-fade-up hover:border-ticos-primary/50 transition-all group border border-white/5" style="transition-delay: 150ms;">
-                    <div class="overflow-hidden relative bg-[#050505] flex items-center justify-center h-64 md:h-[350px]">
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
-                        <img src="decor/cà phê 29k.jpg" onerror="this.onerror=null; this.src='cà phê 29k.jpg';" class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
+                <div class="bg-white dark:bg-[#111] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl gs-fade-up hover:border-ticos-primary/50 transition-all group border border-gray-200 dark:border-white/5" style="transition-delay: 150ms;">
+                    <div class="overflow-hidden relative bg-gray-100 dark:bg-[#050505] flex items-center justify-center h-56 md:h-72 lg:h-[350px]">
+                        <img loading="lazy" src="decor/cà phê 29k.jpg" onerror="this.onerror=null; this.src='cà phê 29k.jpg';" class="w-full h-full object-contain group-hover:scale-105 transition duration-700 p-2 md:p-4">
                     </div>
-                    <div class="p-10 relative bg-[#111] z-20 border-t border-white/5">
-                        <div class="inline-block bg-white/5 text-gray-300 font-black text-xs uppercase tracking-widest mb-4 px-4 py-2 rounded-full border border-white/10"><i class="fa-solid fa-location-dot mr-2"></i> Chi nhánh Bàu Cát (06h-11h)</div>
-                        <h3 class="font-heading text-3xl font-black text-white uppercase mb-4 leading-snug">BUỔI SÁNG TỈNH TÁO <br> CHỈ VỚI 29 CÀNH</h3>
-                        <p class="text-gray-400 text-base leading-relaxed font-medium">Làm ngụm Cà Phê Đen hoặc Bạc Xỉu đánh thức não bộ sau 1 đêm thức trắng. Đồng giá 29K rẻ bèo (áp dụng T2 đến T5). Còn chờ gì nữa?</p>
+                    <div class="p-6 md:p-10 relative bg-white dark:bg-[#111] z-20 border-t border-gray-100 dark:border-white/5">
+                        <div class="inline-block bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 font-black text-[10px] md:text-xs uppercase tracking-widest mb-3 md:mb-4 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-gray-200 dark:border-white/10"><i class="fa-solid fa-location-dot mr-2"></i> CN Bàu Cát (06h-11h)</div>
+                        <h3 class="font-heading text-2xl md:text-3xl font-black text-gray-900 dark:text-white uppercase mb-3 md:mb-4 leading-snug">BUỔI SÁNG TỈNH TÁO <br> CHỈ VỚI 29 CÀNH</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed font-medium">Làm ngụm Cà Phê Đen hoặc Bạc Xỉu đánh thức não bộ sau 1 đêm thức trắng. Đồng giá 29K rẻ bèo (áp dụng T2 đến T5). Còn chờ gì nữa?</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="feedback" class="py-32 bg-[#050505] relative overflow-hidden">
-        <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-20 gs-fade-up">
-                <span class="text-ticos-primary font-black tracking-[0.4em] text-sm uppercase block mb-4">Không seeding, toàn người thật việc thật</span>
-                <h2 class="font-heading text-5xl md:text-[5.5rem] font-black text-white uppercase mb-6">NHỮNG LỜI <br><span class="text-gray-500">RUỘT GAN</span></h2>
+    <section id="feedback" class="min-h-[100dvh] flex flex-col justify-center py-20 bg-gray-50 dark:bg-[#050505] relative overflow-hidden transition-colors duration-500">
+        <div class="max-w-7xl w-full mx-auto px-6 relative z-10">
+            <div class="text-center mb-12 md:mb-20 gs-fade-up">
+                <span class="text-ticos-primary font-black tracking-[0.4em] text-xs md:text-sm uppercase block mb-3 md:mb-4">Không seeding, toàn người thật việc thật</span>
+                <h2 class="font-heading text-4xl md:text-[5.5rem] font-black text-gray-900 dark:text-white uppercase mb-4 md:mb-6 leading-none">NHỮNG LỜI <br><span class="text-gray-500">RUỘT GAN</span></h2>
             </div>
             
-            <div class="swiper feedbackSwiper gs-fade-up px-4">
+            <div class="swiper feedbackSwiper gs-fade-up px-2 md:px-4">
                 <div class="swiper-wrapper mb-12">
                     <div class="swiper-slide">
-                        <div class="bg-[#111] p-10 rounded-[2.5rem] h-full relative hover:border-ticos-primary/30 transition-all border border-white/5 group">
-                            <i class="fa-solid fa-quote-left text-5xl text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/20 transition"></i>
-                            <div class="flex items-center mb-8">
-                                <div class="w-14 h-14 rounded-full bg-[#1A73E8] flex items-center justify-center text-white font-black text-2xl mr-4 shadow-lg">P</div>
+                        <div class="bg-white dark:bg-[#111] p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] h-full relative hover:border-ticos-primary/40 transition-all border border-gray-200 dark:border-white/5 shadow-xl group">
+                            <i class="fa-solid fa-quote-left text-4xl md:text-5xl text-gray-100 dark:text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/10 transition"></i>
+                            <div class="flex items-center mb-6 md:mb-8">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#1A73E8] flex items-center justify-center text-white font-black text-xl md:text-2xl mr-4 shadow-lg">P</div>
                                 <div>
-                                    <h4 class="text-white font-black font-heading text-xl tracking-wide">Đình Phúc</h4>
-                                    <p class="text-gray-500 text-xs font-bold uppercase mt-1">Chiến thần chạy deadline</p>
+                                    <h4 class="text-gray-900 dark:text-white font-black font-heading text-lg md:text-xl tracking-wide">Đình Phúc</h4>
+                                    <p class="text-gray-500 text-[10px] md:text-xs font-bold uppercase mt-1">Chiến thần chạy deadline</p>
                                 </div>
                             </div>
-                            <p class="text-gray-300 text-base leading-relaxed font-medium">"Không khí ở đây lạ lắm, vác máy ra là gõ liên tục không buồn ngủ. Chắc do điều hòa xịn với nhạc êm. Ổ cắm thì la liệt hở tí là thấy. Nước ngon, duyệt!"</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">"Không khí ở đây lạ lắm, vác máy ra là gõ liên tục không buồn ngủ. Chắc do điều hòa xịn với nhạc êm. Ổ cắm thì la liệt hở tí là thấy. Nước ngon, duyệt!"</p>
                         </div>
                     </div>
                     <div class="swiper-slide">
-                        <div class="bg-[#111] p-10 rounded-[2.5rem] h-full relative hover:border-ticos-primary/30 transition-all border border-white/5 group">
-                            <i class="fa-solid fa-quote-left text-5xl text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/20 transition"></i>
-                            <div class="flex items-center mb-8">
-                                <div class="w-14 h-14 rounded-full bg-[#EA4335] flex items-center justify-center text-white font-black text-2xl mr-4 shadow-lg">A</div>
+                        <div class="bg-white dark:bg-[#111] p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] h-full relative hover:border-ticos-primary/40 transition-all border border-gray-200 dark:border-white/5 shadow-xl group">
+                            <i class="fa-solid fa-quote-left text-4xl md:text-5xl text-gray-100 dark:text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/10 transition"></i>
+                            <div class="flex items-center mb-6 md:mb-8">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#EA4335] flex items-center justify-center text-white font-black text-xl md:text-2xl mr-4 shadow-lg">A</div>
                                 <div>
-                                    <h4 class="text-white font-black font-heading text-xl tracking-wide">Châu Anh</h4>
-                                    <p class="text-gray-500 text-xs font-bold uppercase mt-1">Cú đêm chuyên nghiệp</p>
+                                    <h4 class="text-gray-900 dark:text-white font-black font-heading text-lg md:text-xl tracking-wide">Châu Anh</h4>
+                                    <p class="text-gray-500 text-[10px] md:text-xs font-bold uppercase mt-1">Cú đêm chuyên nghiệp</p>
                                 </div>
                             </div>
-                            <p class="text-gray-300 text-base leading-relaxed font-medium">"Thích nhất trà sữa nguyên lá, uống dính thật sự. Quán mở 24/7 cứu rỗi mấy đứa sinh viên làm đồ án như mình. Bàn rộng rãi bưng cả đống sách vở ra vẫn vừa."</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">"Thích nhất trà sữa nguyên lá, uống dính thật sự. Quán mở 24/7 cứu rỗi mấy đứa sinh viên làm đồ án như mình. Bàn rộng rãi bưng cả đống sách vở ra vẫn vừa."</p>
                         </div>
                     </div>
                     <div class="swiper-slide">
-                        <div class="bg-[#111] p-10 rounded-[2.5rem] h-full relative hover:border-ticos-primary/30 transition-all border border-white/5 group">
-                            <i class="fa-solid fa-quote-left text-5xl text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/20 transition"></i>
-                            <div class="flex items-center mb-8">
-                                <div class="w-14 h-14 rounded-full bg-[#FBBC05] flex items-center justify-center text-white font-black text-2xl mr-4 shadow-lg">N</div>
+                        <div class="bg-white dark:bg-[#111] p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] h-full relative hover:border-ticos-primary/40 transition-all border border-gray-200 dark:border-white/5 shadow-xl group">
+                            <i class="fa-solid fa-quote-left text-4xl md:text-5xl text-gray-100 dark:text-white/5 absolute top-6 right-8 group-hover:text-ticos-primary/10 transition"></i>
+                            <div class="flex items-center mb-6 md:mb-8">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#FBBC05] flex items-center justify-center text-white font-black text-xl md:text-2xl mr-4 shadow-lg">N</div>
                                 <div>
-                                    <h4 class="text-white font-black font-heading text-xl tracking-wide">Minh Nam</h4>
-                                    <p class="text-gray-500 text-xs font-bold uppercase mt-1">Freelancer</p>
+                                    <h4 class="text-gray-900 dark:text-white font-black font-heading text-lg md:text-xl tracking-wide">Minh Nam</h4>
+                                    <p class="text-gray-500 text-[10px] md:text-xs font-bold uppercase mt-1">Freelancer</p>
                                 </div>
                             </div>
-                            <p class="text-gray-300 text-base leading-relaxed font-medium">"Tìm mãi mới được quán ghế ngồi đỡ đau lưng. Làm việc từ tối đến sáng mà vẫn okay. Bạc xỉu đậm đà. Có cả chỗ để xe rộng khỏi lo. Tuyệt!"</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">"Tìm mãi mới được quán ghế ngồi đỡ đau lưng. Làm việc từ tối đến sáng mà vẫn okay. Bạc xỉu đậm đà. Có cả chỗ để xe rộng khỏi lo. Tuyệt!"</p>
                         </div>
                     </div>
                 </div>
@@ -1150,66 +1115,68 @@
         </div>
     </section>
 
-    <section id="map" class="py-32 bg-[#050505]">
-        <div class="max-w-7xl mx-auto px-6 gs-fade-up">
-            <h2 class="font-heading text-5xl md:text-[5rem] font-black uppercase text-white text-center mb-20 drop-shadow-xl">TỌA ĐỘ <span class="text-ticos-primary">NẠP CAFEIN</span></h2>
+    <section id="map" class="min-h-[100dvh] flex flex-col justify-center py-20 bg-white dark:bg-[#050505] transition-colors duration-500">
+        <div class="max-w-7xl w-full mx-auto px-6 gs-fade-up">
+            <h2 class="font-heading text-4xl md:text-[5rem] font-black uppercase text-gray-900 dark:text-white text-center mb-12 md:mb-20 drop-shadow-xl leading-none">TỌA ĐỘ <span class="text-ticos-primary">NẠP CAFEIN</span></h2>
             
             <div class="flex flex-col lg:flex-row gap-8 items-stretch">
-                <div class="lg:w-1/3 bg-[#0a0a0a] p-8 rounded-[3rem] shadow-2xl flex flex-col justify-center border border-white/5">
-                    <div id="btnPVT" onclick="changeMap('pvt')" class="p-6 rounded-[2rem] border border-ticos-primary/50 bg-ticos-primary/10 cursor-pointer transition-all active-tab group mb-6 shadow-md">
-                        <h4 class="font-heading font-black uppercase text-2xl mb-2 flex items-center gap-3 text-white"><i class="fa-solid fa-location-dot text-ticos-primary text-2xl"></i> Phan Văn Trị</h4>
-                        <p class="text-sm text-gray-400 font-bold uppercase tracking-widest ml-9">527 Phan Văn Trị, Gò Vấp</p>
+                <div class="lg:w-1/3 bg-gray-50 dark:bg-[#0a0a0a] p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] shadow-2xl flex flex-col justify-center border border-gray-200 dark:border-white/5 transition-colors">
+                    <div id="btnPVT" onclick="changeMap('pvt')" class="p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-ticos-primary/50 bg-ticos-primary/10 cursor-pointer transition-all group mb-4 md:mb-6 shadow-md">
+                        <h4 class="font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-900 dark:text-white"><i class="fa-solid fa-location-dot text-ticos-primary text-xl md:text-2xl"></i> Phan Văn Trị</h4>
+                        <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest ml-8 md:ml-9">527 Phan Văn Trị, Gò Vấp</p>
                     </div>
                     
-                    <div id="btnBauCat" onclick="changeMap('baucat')" class="p-6 rounded-[2rem] border border-transparent hover:border-white/10 bg-[#151515] cursor-pointer transition-all group shadow-sm hover:bg-[#1a1a1a]">
-                        <h4 class="font-heading font-black uppercase text-2xl mb-2 flex items-center gap-3 text-gray-300"><i class="fa-solid fa-location-dot text-gray-600 group-hover:text-ticos-primary transition text-2xl"></i> Bàu Cát</h4>
-                        <p class="text-sm text-gray-600 font-bold uppercase tracking-widest ml-9 group-hover:text-gray-400 transition">145 Bàu Cát, Tân Bình</p>
+                    <div id="btnBauCat" onclick="changeMap('baucat')" class="p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-transparent hover:border-gray-300 dark:hover:border-white/10 bg-white dark:bg-[#151515] cursor-pointer transition-all group shadow-sm hover:bg-gray-100 dark:hover:bg-[#1a1a1a]">
+                        <h4 class="font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-500 dark:text-gray-300"><i class="fa-solid fa-location-dot text-gray-400 dark:text-gray-600 group-hover:text-ticos-primary transition text-xl md:text-2xl"></i> Bàu Cát</h4>
+                        <p class="text-xs md:text-sm text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest ml-8 md:ml-9 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition">145 Bàu Cát, Tân Bình</p>
                     </div>
                 </div>
                 
-                <div class="lg:w-2/3 h-[500px] md:h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border border-white/5 bg-[#111] relative">
-                    <iframe id="map-iframe" class="w-full h-full filter invert hue-rotate-180 contrast-125 saturate-50 opacity-80" src="https://www.google.com/maps?q=10.825619,106.687595&hl=es;z=16&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                <div class="lg:w-2/3 h-[400px] md:h-[500px] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#111] relative">
+                    <iframe id="map-iframe" class="w-full h-full filter transition-all duration-500 dark:invert dark:hue-rotate-180 dark:contrast-125 dark:saturate-50 opacity-90 dark:opacity-80" src="https://www.google.com/maps?q=10.825619,106.687595&hl=es;z=16&output=embed" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-[#050505] pt-32 pb-12 relative overflow-hidden">
+    <footer class="bg-gray-50 dark:bg-[#050505] pt-20 md:pt-32 pb-8 md:pb-12 relative overflow-hidden transition-colors duration-500">
         <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-ticos-primary/50 to-transparent"></div>
         
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 text-center md:text-left relative z-10">
-            <div class="col-span-1 flex flex-col items-center md:items-start">
-                <img src="decor/logo.png" onerror="this.onerror=null; this.src='logo.png';" class="h-20 mb-8 opacity-90" alt="Logo">
-                <p class="text-gray-500 text-xs font-black uppercase tracking-[0.4em] leading-relaxed">CÀY ĐÊM NHỚ <br><span class="text-gray-300">UỐNG CÀ PHÊ.</span></p>
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-16 md:mb-20 text-center md:text-left relative z-10">
+            <div class="flex flex-col items-center md:items-start">
+                <div class="bg-black/90 p-3 rounded-2xl mb-6 inline-block dark:bg-transparent dark:p-0">
+                    <img loading="lazy" src="decor/logo.png" onerror="this.onerror=null; this.src='logo.png';" class="h-16 md:h-20 opacity-90" alt="Logo">
+                </div>
+                <p class="text-gray-500 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] leading-relaxed">CÀY ĐÊM NHỚ <br><span class="text-gray-700 dark:text-gray-300">UỐNG CÀ PHÊ.</span></p>
             </div>
             
             <div>
-                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">Trạm Sạc</h4>
-                <p class="text-gray-400 text-sm leading-relaxed font-body font-medium tracking-wide">
-                    <span class="text-white font-bold block mb-1">CN1 (Cày 24/7):</span> 527 Phan Văn Trị, Gò Vấp <br>
-                    <span class="text-white font-bold block mt-4 mb-1">CN2 (07h-02h):</span> 145 Bàu Cát, Tân Bình
+                <h4 class="text-gray-900 dark:text-white font-heading font-black text-lg md:text-xl mb-4 md:mb-6 uppercase tracking-[0.2em]">Trạm Sạc</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-xs md:text-sm leading-relaxed font-body font-medium tracking-wide">
+                    <span class="text-gray-800 dark:text-white font-bold block mb-1">CN1 (Cày 24/7):</span> 527 Phan Văn Trị, Gò Vấp <br>
+                    <span class="text-gray-800 dark:text-white font-bold block mt-3 md:mt-4 mb-1">CN2 (07h-02h):</span> 145 Bàu Cát, Tân Bình
                 </p>
             </div>
             
             <div>
-                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">THÔNG TIN LIÊN HỆ</h4>
-                <p class="text-gray-400 text-sm leading-relaxed font-body font-medium tracking-wide">
-                    <span class="text-white font-bold block mb-2">Hợp tác kinh doanh:</span> 
-                    <a href="mailto:coffee.ticos@gmail.com" class="hover:text-ticos-primary transition-colors border-b border-gray-700 hover:border-ticos-primary pb-0.5">coffee.ticos@gmail.com</a>
+                <h4 class="text-gray-900 dark:text-white font-heading font-black text-lg md:text-xl mb-4 md:mb-6 uppercase tracking-[0.2em]">LIÊN HỆ</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-xs md:text-sm leading-relaxed font-body font-medium tracking-wide">
+                    <span class="text-gray-800 dark:text-white font-bold block mb-2">Hợp tác kinh doanh:</span> 
+                    <a href="mailto:coffee.ticos@gmail.com" class="hover:text-ticos-primary transition-colors border-b border-gray-300 dark:border-gray-700 hover:border-ticos-primary pb-0.5">coffee.ticos@gmail.com</a>
                 </p>
             </div>
             
             <div>
-                <h4 class="text-white font-heading font-black text-xl mb-6 uppercase tracking-[0.2em]">KẾT NỐI VỚI CHÚNG TÔI</h4>
-                <div class="flex justify-center md:justify-start gap-4">
-                    <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-[#1877F2] transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="decor/mã zalo.jpg" onerror="this.href='mã zalo.jpg'" data-fancybox="qr-footer" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-[#0068FF] transition-all text-xs shadow-md border border-white/5 font-black">Zalo</a>
-                    <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:to-[#bc1888] transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="w-12 h-12 rounded-full bg-[#151515] flex items-center justify-center text-white hover:bg-black hover:border hover:border-gray-500 transition-all text-xl shadow-md border border-white/5"><i class="fa-brands fa-tiktok"></i></a>
+                <h4 class="text-gray-900 dark:text-white font-heading font-black text-lg md:text-xl mb-4 md:mb-6 uppercase tracking-[0.2em]">SỐNG ẢO</h4>
+                <div class="flex justify-center md:justify-start gap-3 md:gap-4">
+                    <a href="https://www.facebook.com/ticoscoffee/" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 dark:bg-[#151515] flex items-center justify-center text-gray-700 dark:text-white hover:text-white hover:bg-[#1877F2] transition-all text-lg md:text-xl shadow-sm border border-gray-300 dark:border-white/5"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="decor/mã zalo.jpg" data-fancybox="qr-footer" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 dark:bg-[#151515] flex items-center justify-center text-gray-700 dark:text-white hover:text-white hover:bg-[#0068FF] transition-all text-[10px] md:text-xs shadow-sm border border-gray-300 dark:border-white/5 font-black">Zalo</a>
+                    <a href="https://www.instagram.com/ticoszonecoffeetea/" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 dark:bg-[#151515] flex items-center justify-center text-gray-700 dark:text-white hover:text-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:to-[#bc1888] transition-all text-lg md:text-xl shadow-sm border border-gray-300 dark:border-white/5"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@ticoscoffeeofficial" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 dark:bg-[#151515] flex items-center justify-center text-gray-700 dark:text-white hover:text-white hover:bg-black dark:hover:border-gray-500 transition-all text-lg md:text-xl shadow-sm border border-gray-300 dark:border-white/5"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
         </div>
-        <div class="text-center text-gray-700 text-xs font-black uppercase tracking-[0.6em] relative z-10 border-t border-white/5 pt-8 w-max mx-auto px-10">© 2026 TICOS COFFEE ZONE. NO BUG ALLOWED.</div>
+        <div class="text-center text-gray-400 dark:text-gray-700 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] md:tracking-[0.6em] relative z-10 border-t border-gray-200 dark:border-white/5 pt-6 md:pt-8 w-max mx-auto px-6 md:px-10">© 2026 TICOS COFFEE ZONE. NO BUG ALLOWED.</div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -1218,23 +1185,50 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     
     <script>
-        // LỌC MENU TABS
+        // Tắt màn hình chờ siêu mượt
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 600);
+        });
+
+        // Xử lý nút gạt Dark/Light Mode
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const toggleIconMoon = themeToggleBtn.querySelector('.fa-moon');
+        const toggleIconSun = themeToggleBtn.querySelector('.fa-sun');
+
+        // Mặc định luôn là Dark (Cú đêm)
+        if (localStorage.theme === 'light') { htmlElement.classList.remove('dark'); } 
+        else { htmlElement.classList.add('dark'); }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            localStorage.theme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // MENU FILTER 
         function filterMenu(type, btn) {
             document.querySelectorAll('#menu button.flex-none').forEach(b => {
                 b.classList.remove('active-tab');
+                b.classList.replace('text-white', 'text-gray-600');
+                if(htmlElement.classList.contains('dark')) b.classList.replace('text-gray-600', 'text-gray-400');
             });
             btn.classList.add('active-tab');
+            btn.classList.remove('text-gray-600', 'text-gray-400');
 
             const allItems = document.querySelectorAll('.menu-item');
+            let delay = 0;
             allItems.forEach(item => {
                 if(type === 'all' || item.classList.contains(type)) {
                     item.style.display = 'block';
-                    gsap.fromTo(item, { opacity: 0, scale: 0.9, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(1.5)" });
+                    gsap.fromTo(item, { opacity: 0, scale: 0.95, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, delay: delay, ease: "power2.out" });
+                    delay += 0.05; // Animation premium stagger
                 } else {
                     item.style.display = 'none';
                 }
             });
-            ScrollTrigger.refresh();
+            setTimeout(() => ScrollTrigger.refresh(), 500);
         }
 
         // BẢN ĐỒ
@@ -1259,30 +1253,27 @@
             const btnP = document.getElementById('btnPVT');
             const btnB = document.getElementById('btnBauCat');
             
+            // Logic đổi class cho nút Map (tối ưu cả Dark & Light)
             if(key === 'pvt') {
-                btnP.classList.add('border-ticos-primary/50', 'bg-ticos-primary/10');
-                btnP.classList.remove('border-transparent', 'bg-[#151515]');
-                btnP.querySelector('h4').classList.replace('text-gray-300', 'text-white');
-                btnP.querySelector('i').classList.replace('text-gray-600', 'text-ticos-primary');
-                btnP.querySelector('p').classList.replace('text-gray-600', 'text-gray-400');
+                btnP.className = "p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-ticos-primary/50 bg-ticos-primary/10 cursor-pointer transition-all group mb-4 md:mb-6 shadow-md";
+                btnP.querySelector('h4').className = "font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-900 dark:text-white";
+                btnP.querySelector('i').className = "fa-solid fa-location-dot text-ticos-primary text-xl md:text-2xl";
+                btnP.querySelector('p').className = "text-xs md:text-sm text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest ml-8 md:ml-9";
                 
-                btnB.classList.remove('border-ticos-primary/50', 'bg-ticos-primary/10');
-                btnB.classList.add('border-transparent', 'bg-[#151515]');
-                btnB.querySelector('h4').classList.replace('text-white', 'text-gray-300');
-                btnB.querySelector('i').classList.replace('text-ticos-primary', 'text-gray-600');
-                btnB.querySelector('p').classList.replace('text-gray-400', 'text-gray-600');
+                btnB.className = "p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-transparent hover:border-gray-300 dark:hover:border-white/10 bg-white dark:bg-[#151515] cursor-pointer transition-all group shadow-sm hover:bg-gray-100 dark:hover:bg-[#1a1a1a]";
+                btnB.querySelector('h4').className = "font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-500 dark:text-gray-300";
+                btnB.querySelector('i').className = "fa-solid fa-location-dot text-gray-400 dark:text-gray-600 group-hover:text-ticos-primary transition text-xl md:text-2xl";
+                btnB.querySelector('p').className = "text-xs md:text-sm text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest ml-8 md:ml-9 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition";
             } else {
-                btnB.classList.add('border-ticos-primary/50', 'bg-ticos-primary/10');
-                btnB.classList.remove('border-transparent', 'bg-[#151515]');
-                btnB.querySelector('h4').classList.replace('text-gray-300', 'text-white');
-                btnB.querySelector('i').classList.replace('text-gray-600', 'text-ticos-primary');
-                btnB.querySelector('p').classList.replace('text-gray-600', 'text-gray-400');
+                btnB.className = "p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-ticos-primary/50 bg-ticos-primary/10 cursor-pointer transition-all group mb-4 md:mb-6 shadow-md";
+                btnB.querySelector('h4').className = "font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-900 dark:text-white";
+                btnB.querySelector('i').className = "fa-solid fa-location-dot text-ticos-primary text-xl md:text-2xl";
+                btnB.querySelector('p').className = "text-xs md:text-sm text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest ml-8 md:ml-9";
 
-                btnP.classList.remove('border-ticos-primary/50', 'bg-ticos-primary/10');
-                btnP.classList.add('border-transparent', 'bg-[#151515]');
-                btnP.querySelector('h4').classList.replace('text-white', 'text-gray-300');
-                btnP.querySelector('i').classList.replace('text-ticos-primary', 'text-gray-600');
-                btnP.querySelector('p').classList.replace('text-gray-400', 'text-gray-600');
+                btnP.className = "p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-transparent hover:border-gray-300 dark:hover:border-white/10 bg-white dark:bg-[#151515] cursor-pointer transition-all group shadow-sm hover:bg-gray-100 dark:hover:bg-[#1a1a1a]";
+                btnP.querySelector('h4').className = "font-heading font-black uppercase text-xl md:text-2xl mb-1 md:mb-2 flex items-center gap-3 text-gray-500 dark:text-gray-300";
+                btnP.querySelector('i').className = "fa-solid fa-location-dot text-gray-400 dark:text-gray-600 group-hover:text-ticos-primary transition text-xl md:text-2xl";
+                btnP.querySelector('p').className = "text-xs md:text-sm text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest ml-8 md:ml-9 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition";
             }
         }
 
@@ -1294,7 +1285,6 @@
             return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         }
 
-        // Modal Đặt Món
         const modal = document.getElementById('orderModal');
         const modalContent = document.getElementById('orderModalContent');
         
@@ -1313,10 +1303,7 @@
         function openOrderModal(e) {
             e.preventDefault(); 
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
-            }, 10);
+            setTimeout(() => { modalContent.classList.remove('scale-95'); modalContent.classList.add('scale-100'); }, 10);
             
             document.getElementById('geoLoading').classList.remove('hidden');
             document.getElementById('geoResult').classList.add('hidden');
@@ -1347,49 +1334,41 @@
             }
         }
 
-        // Khởi tạo thư viện
         Fancybox.bind('[data-fancybox]');
         
-        // Khởi tạo Swiper cho phần feedback
         const swiper = new Swiper('.feedbackSwiper', {
-            slidesPerView: 1, spaceBetween: 30, loop: true,
+            slidesPerView: 1, spaceBetween: 20, loop: true,
             autoplay: { delay: 5000, disableOnInteraction: false },
             pagination: { el: '.swiper-pagination', clickable: true },
-            breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+            breakpoints: { 768: { slidesPerView: 2, spaceBetween: 30 }, 1024: { slidesPerView: 3, spaceBetween: 40 } }
         });
 
-        // Khởi tạo Swiper cho phần Gallery Không gian
         const spaceSwiper = new Swiper('.spaceSwiper', {
-            slidesPerView: 1,
-            spaceBetween: 15,
-            loop: true,
-            grabCursor: true,
+            slidesPerView: 1, spaceBetween: 15, loop: true, grabCursor: true,
             autoplay: { delay: 3500, disableOnInteraction: false },
             pagination: { el: '.space-pagination', clickable: true },
         });
         
-        // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
         
-        // Hiệu ứng cuộn Navbar mượt mà hơn
+        // Cải tiến Blur Navbar (Dynamic Tailwind classes for dark/light)
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             const navContainer = document.getElementById('nav-container');
             if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'bg-[#050505]/95');
-                nav.classList.remove('bg-[#050505]/70');
-                // Thu nhỏ độ cao Navbar khi cuộn
+                nav.classList.add('shadow-lg', 'dark:bg-[#050505]/95', 'bg-white/95');
+                nav.classList.remove('dark:bg-[#050505]/70', 'bg-white/70');
                 navContainer.classList.add('py-2', 'md:py-3');
                 navContainer.classList.remove('py-5', 'md:py-6');
             } else {
-                nav.classList.remove('shadow-lg', 'bg-[#050505]/95');
-                nav.classList.add('bg-[#050505]/70');
-                // Phóng to Navbar về nguyên bản khi ở trên cùng
+                nav.classList.remove('shadow-lg', 'dark:bg-[#050505]/95', 'bg-white/95');
+                nav.classList.add('dark:bg-[#050505]/70', 'bg-white/70');
                 navContainer.classList.remove('py-2', 'md:py-3');
                 navContainer.classList.add('py-5', 'md:py-6');
             }
         });
 
+        // Animations Premium
         setTimeout(() => {
             gsap.utils.toArray('.gs-fade-up').forEach(elem => { 
                 gsap.from(elem, { y: 60, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: elem, start: "top 85%" } }); 
@@ -1403,6 +1382,9 @@
             gsap.utils.toArray('.gs-fade-down').forEach(elem => { 
                 gsap.from(elem, { y: -40, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: elem, start: "top 80%" } }); 
             });
+
+            // Parallax Scroll cho Video Hero
+            gsap.to("#hero-video", { y: "30%", ease: "none", scrollTrigger: { trigger: "section", start: "top top", scrub: true }});
         }, 500);
     </script>
 </body>
